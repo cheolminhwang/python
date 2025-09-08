@@ -207,56 +207,8 @@ def get_command_output_to_set_explicit(command):
         print(f"Unexpected error: {e}")
         return set()
 
-# function using more explicit splitting for space/tab
-def asdf(command):
-    """
-    Alternative version that explicitly handles space and tab separation.
-    """
-    try:
-        result = subprocess.run(
-            command,
-            shell=True,
-            capture_output=True,
-            text=True,
-            check=True
-        )
 
-        output_set = set()
-
-        for line in result.stderr.strip().split('\n'):
-            if line.strip():
-                # Find first space or tab
-                space_pos = line.find(' ')
-                tab_pos = line.find('\t')
-
-                # Get the position of the first delimiter (space or tab)
-                if space_pos == -1:
-                    delimiter_pos = tab_pos
-                elif tab_pos == -1:
-                    delimiter_pos = space_pos
-                else:
-                    delimiter_pos = min(space_pos, tab_pos)
-
-                # Extract first string
-                if delimiter_pos == -1:
-                    # No space or tab found, entire line is the first string
-                    first_string = line.strip()
-                else:
-                    first_string = line[:delimiter_pos].strip()
-
-                if first_string:
-                    output_set.add(first_string)
-
-        return output_set
-
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing command '{command}': {e}")
-        print(f"Error output: {e.stderr}")
-        return set()
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-        return set()
-
+  
 if __name__ == "__main__":
     main()
     
