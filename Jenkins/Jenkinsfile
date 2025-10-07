@@ -1,4 +1,3 @@
-def repoURL = "https://bitbucket.org/dhs-kolea/devops_operations.git"
 
 pipeline {
     agent {
@@ -11,8 +10,7 @@ pipeline {
     stages {		 
 		stage('Environment') {
 			steps {
-				echo "MY_GIT_URL: ${env.MY_GIT_URL}"
-				echo "repoURL: ${repoURL}"
+				echo "MY_GIT_URL: ${env.MY_GITHUB}" 
 				echo "params.Tag: ${params.Tag}"
 			}
 		}
