@@ -1,0 +1,38 @@
+
+pipeline {
+    agent {
+		node{
+			label 'built-in'
+			customWorkspace '/tmp'	
+		}
+	}
+
+    stages {		 
+		stage('Environment') {
+			steps {
+				echo "MY_GIT_URL: ${env.MY_GITHUB}" 
+				echo "params.Tag: ${params.Branch}"
+			}
+		}
+		
+		stage('Checkout') {
+			steps {
+				checkout scm
+			}			
+		}
+		
+        stage('Execution') {
+            steps {
+                script {
+                    def response = sh(
+                        script: """
+                            ls -al
+                        """,
+                        returnStdout: true
+                    ).trim() 
+                    echo "response:${response}"               
+                }
+            }
+        }
+    }
+}
