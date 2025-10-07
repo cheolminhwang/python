@@ -3,7 +3,7 @@ pipeline {
     agent {
 		node{
 			label 'built-in'
-			customWorkspace '/tmp'	
+			customWorkspace '/tmp/tmp'	
 		}
 	}
 
