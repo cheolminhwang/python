@@ -1,14 +1,39 @@
-pipeline {
-    agent any
-    stages {
-        stage('Run Shell Script') {
-            steps {
-                // Example: Execute a command inline
-                sh 'echo "Hello from Jenkins!"'
+def repoURL = "https://bitbucket.org/dhs-kolea/devops_operations.git"
 
-                // Example: Execute a script from the repository
-                // Ensure the script has execute permissions (e.g., chmod +x my_script.sh)
-                sh './shG.sh'
+pipeline {
+    agent {
+		node{
+			label 'built-in'
+			customWorkspace '/stage/asi/automations/tmp'	
+		}
+	}
+
+    stages {		 
+		stage('Environment') {
+			steps {
+				echo "MY_GIT_URL: ${env.MY_GIT_URL}"
+				echo "repoURL: ${repoURL}"
+				echo "params.Tag: ${params.Tag}"
+			}
+		}
+		
+		stage('Checkout') {
+			steps {
+				checkout scm
+			}			
+		}
+		
+        stage('Execution') {
+            steps {
+                script {
+                    def response = sh(
+                        script: """
+                            ls -al
+                        """,
+                        returnStdout: true
+                    ).trim() 
+                    echo "response:${response}"               
+                }
             }
         }
     }
